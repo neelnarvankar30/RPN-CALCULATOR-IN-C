@@ -1,6 +1,5 @@
-/* Fill in your Name and GNumber in the following two comment fields
- * Name: Neel Prasad Narvankar
- * GNumber: G01210145
+/* Name: Neel Prasad Narvankar
+ 
  */
 #include <stdio.h>
 #include <stdlib.h>
