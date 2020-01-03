@@ -1,0 +1,423 @@
+int hash_put(Symtab *symtab, char *var, int val) {
+  /* Implement this function */
+  if (symtab == NULL)
+    {
+        return -1;  
+    }
+
+    long hashvr = hash_code(var);
+    double load = (double(symtab->size)/double(symtab->capacity));
+    int index = ((hashvr) % (symtab->capacity));
+    Symbol *temp  = symbol_create(var,val);
+
+    if (symtab->table[index] != NULL)
+    {
+      Symbol *walker = symtab->table[index];
+
+        while(walker != NULL){
+            if(strcmp(var, walker->variable) == 0){
+                walker->val = val;
+            }
+            
+       
+
+
+
+              if(walker->next == NULL){
+                walker->next = temp ;
+                (symtab->size)++ ;
+                return 0;
+              }
+
+              walker = walker->next;
+        }
+    }
+
+    
+
+
+    if (symtab->table[index] == NULL){
+        symtab->table[index]  = temp;
+        (symtab->size)++ ;
+        return 0;
+    }
+
+    else{
+
+       Symbol *walker = symtab->table[index];
+        while(walker->next != NULL){
+            walker = walker->next;
+        }
+
+        walker->next = temp;
+          return 0;
+
+    }
+
+            
+              if(load >= 2.0) { 
+              symtab->capacity =((symtab->capacity)*2);
+              hash_rehash(symtab, symtab->capacity);
+                }
+
+
+
+  return 0;
+}
+
+
+ if(tok2->type == TYPE_VARIABLE){
+                  Symbol *sym = NULL;
+                  sym =hash_get(symtab, tok2->variable);
+                      if(sym == NULL){
+                        return -1;
+                        }
+                  tok2->value = sym->val;
+                  tok3 = (tok2->value) - (tok1->value);
+                  Token *tok =token_create_value(tok3);
+                  stack_push(stack, tok);
+                  token_free(tok1);
+                  token_free(tok2);
+                  symbol_free(sym);
+                  return 0;
+                }
+
+
+
+
+
+
+
+
+
+
+/* Fill in your Name and GNumber in the following two comment fields
+ * Name:Neel Prasad Narvankar
+ * GNumber: G01210145
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "node.h"
+#include "hash.h"
+
+/* (IMPLEMENT THIS FUNCTION)
+ * In this function, you will create a new Symtab struct.
+ * Follow the Directions in the Project Documentation for this Function
+ * Return the pointer to the new symtab.
+ * On any memory errors, return NULL
+ */
+Symtab *hash_initialize() {
+  /* Implement this function */
+  Symtab *sym = malloc(sizeof(Symtab)*1);
+  if (sym == NULL)
+  {
+    return NULL;
+  }
+  sym->size = 0;
+  sym->capacity = HASH_TABLE_INITIAL;
+  sym->table = malloc(sizeof(Symbol)*HASH_TABLE_INITIAL);
+
+  for(int i = 0; i < sym->capacity; i++)
+    {
+    sym->table[i] = NULL;
+    }
+  return sym;
+  return NULL;
+}
+
+/* (IMPLEMENT THIS FUNCTION)
+ * Destroy your Symbol Table.
+ * Follow the Directions in the Project Documentation for this Function
+ * Return on any memory errors.
+ */
+void hash_destroy(Symtab *symtab) {
+  /* Implement this function */
+  if(symtab == NULL){
+      return;
+
+    }
+    
+      Symbol *walker = NULL;
+      Symbol *reaper = NULL;
+
+  for (int i = 0; i < symtab->capacity; i++)
+    {
+      if(symtab->table[i]!=NULL){
+    
+      walker = symtab->table[i];
+      reaper = symtab->table[i];
+        while(walker != NULL){
+            walker = walker->next;
+            symbol_free(reaper);
+            reaper = walker;
+          }
+        }
+    }
+free(symtab);  
+}
+
+/* (IMPLEMENT THIS FUNCTION)
+ * Return the capacity of the table inside of symtab.
+ * If symtab is NULL, return -1;
+ */
+int hash_get_capacity(Symtab *symtab) {
+  /* Implement this function */
+  if(symtab == NULL){
+   return -1;
+    }
+
+    return symtab->capacity;    
+}
+
+/* (IMPLEMENT THIS FUNCTION)
+ * Return the number of used indexes in the table (size) inside of symtab.
+ * If symtab is NULL, return -1;
+ */
+int hash_get_size(Symtab *symtab) {
+  /* Implement this function */
+ 
+  if(symtab == NULL){
+   return -1;
+    }
+
+    return symtab->size;  
+}
+
+/* (IMPLEMENT THIS FUNCTION)
+ * Adds a new Symbol to the symtab via Hashing.
+ * Follow the Directions in the Project Documentation for this Function
+ * If symtab is NULL, there are any malloc errors, or if any rehash fails, return -1;
+ * Otherwise, return 0;
+ */
+int hash_put(Symtab *symtab, char *var, int val) {
+  /* Implement this function */
+  if (symtab == NULL)
+    {
+        return -1;  
+    }
+
+    long hashvr = hash_code(var);
+   
+    int index = ((hashvr) % (symtab->capacity));
+    Symbol *temp  = symbol_create(var,val);
+
+    if (symtab->table[index] != NULL)
+    {
+      Symbol *walker = symtab->table[index];
+
+        while(walker != NULL){
+            if(strcmp(var, walker->variable) == 0){
+                walker->val = val;
+                  return 0;
+            }
+            
+              
+
+
+
+              if(walker->next == NULL){
+                  if (strcmp(var, walker->variable) == 0)
+                  {
+                    walker->val = val;
+                  }
+                walker->next = temp ;
+                (symtab->size)++ ;
+                 double load = ((symtab->size)/(symtab->capacity));
+                 if(load >= 2.0) { 
+                 symtab->capacity =((symtab->capacity)*2);
+                  hash_rehash(symtab, symtab->capacity);
+                }
+                return 0;
+              }
+
+              walker = walker->next;
+        }
+    }
+
+    
+
+
+    if (symtab->table[index] == NULL){
+        symtab->table[index]  = temp;
+        (symtab->size)++ ;
+         double load = ((symtab->size)/(symtab->capacity));
+              if(load >= 2.0) { 
+              symtab->capacity =((symtab->capacity)*2);
+              hash_rehash(symtab, symtab->capacity);
+                }
+        return 0;
+    }
+
+
+
+
+
+  return 0;
+}
+
+/* (IMPLEMENT THIS FUNCTION)
+ * Gets the Symbol for a variable in the Hash Table.
+ * Follow the Directions in the Project Documentation for this Function
+ * On any NULL symtab or memory errors, return NULL
+ */
+Symbol *hash_get(Symtab *symtab, char *var) {
+  /* Implement this function */
+  if (symtab == NULL)
+  {
+  return NULL; 
+  } 
+long hashvr = hash_code(var);
+int index = ((hashvr) % (symtab->capacity));
+
+if(symtab == NULL){
+  return NULL;
+      }
+
+
+ Symbol *temp = symtab->table[index]; 
+ 
+ if (temp->next == NULL)
+ {
+ Symbol *sym_temp = symbol_copy(temp);
+ 
+ return sym_temp;  
+ }
+
+ if(temp->next != NULL){
+   while(temp != NULL){
+            if(strcmp(var, temp->variable) == 0){
+               Symbol *sym_temp = symbol_copy(temp);
+ 
+                return sym_temp; 
+              }
+              temp = temp->next;
+           }   
+ }
+return NULL;
+}
+
+/* (IMPLEMENT THIS FUNCTION)
+ * Doubles the size of the Array in symtab and rehashes.
+ * Follow the Directions in the Project Documentation for this Function
+ * If there were any memory errors, set symtab->array to NULL
+ * If symtab is NULL, return immediately.
+ */
+void hash_rehash(Symtab *symtab, int new_capacity) {
+  /* Implement this function */
+
+   if (symtab == NULL)
+    {
+        return;  
+    }     
+
+    Symtab *sym = malloc(sizeof(Symtab));
+  if (sym == NULL)
+  {
+    return;
+  }
+  sym->size = 0;
+  sym->capacity = new_capacity;
+  sym->table = malloc(sizeof(Symbol)*new_capacity);
+  
+
+  for(int i = 0; i < new_capacity; i++)
+    {
+    sym->table[i] = NULL;
+    }
+
+
+for (int i = 0; i < symtab->capacity; i++)
+{
+  Symbol *walker = symtab->table[i]; 
+  Symbol *sender = symtab->table[i];
+
+  if (walker->next == NULL)
+  {
+    sender = symbol_copy(walker);
+    hash_put(sym, sender->variable, sender->val);
+    walker = walker->next;
+    return;
+  }
+
+
+  if (walker->next != NULL)
+  {
+      while(walker != NULL){
+        sender = symbol_copy(walker);
+        hash_put(sym, sender->variable, sender->val);
+        walker = walker->next;
+          return;
+      }
+  }
+}
+
+    Symbol *walk = NULL;
+    Symbol *reaper = NULL;
+
+  for (int i = 0; i < symtab->capacity; i++)
+    {
+      if(symtab->table[i]!=NULL){
+    
+      walk = symtab->table[i];
+      reaper = symtab->table[i];
+        
+        while(walk != NULL){
+            walk = walk->next;
+            symbol_free(reaper);
+            reaper = walk;
+          }
+        }
+    }
+  
+   symtab->table = sym->table;
+
+   if (symtab->table == NULL)
+   {
+      return;
+   }
+
+  return;
+}
+
+/* Implemented for you.
+ * Provided function to print the symbol table */
+void hash_print_symtab(Symtab *symtab) {
+  if(symtab == NULL) {
+    return;
+  }
+  printf("|-----Symbol Table [%d size/%d cap]\n", symtab->size, symtab->capacity);
+
+  int i = 0;
+  Symbol *walker = NULL;
+
+  /* Iterate every index, looking for symbols to print */
+  for(i = 0; i < symtab->capacity; i++) {
+    walker = symtab->table[i];
+    /* For each found linked list, print every symbol therein */
+    while(walker != NULL) {
+      printf("| %10s: %d \n", walker->variable, walker->val);
+      walker = walker->next;
+    }
+  }
+  return;
+}
+
+/* This function is written for you.
+ * This computes the hash function for a String
+ */
+long hash_code(char *var) {
+  long code = 0;
+  int i;
+  int size = strlen(var);
+
+  for(i = 0; i < size; i++) {
+    code = (code + var[i]);
+    if(size == 1 || i < (size - 1)) {
+      code *= 128;
+    }
+  }
+
+  return code;
+}
